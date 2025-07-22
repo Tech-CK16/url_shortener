@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="report.css">
+</head>
+<body>
+    <%- include('header') %>
+    <div class="container">
+        <h1>Student Report Cards</h1>
+        
+        <div class="cards-grid">
+            <% students.map( s => { %>
+                <div class="student-card">
+                    <div class="card-header">
+                        <div class="student-avatar">
+                            <%= s.name.split(' ').map(n => n[0]).join('') %>
+                        </div>
+                        <h2 class="student-name"><%= s.name %></h2>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">Grade</div>
+                                <div class="info-value">
+                                    <span class="grade-badge"><%= s.grade %></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                                </svg>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">Favourite Subject</div>
+                                <div class="info-value">
+                                    <span class="subject-tag"><%= s.favouriteSubject %></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+    <%- include('footer') %>
+</body>
+</html>

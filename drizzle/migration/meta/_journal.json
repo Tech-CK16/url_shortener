@@ -1,0 +1,13 @@
+{
+    "version": "7",
+    "dialect": "mysql",
+    "entries": [
+        {
+            "idx": 0,
+            "version": "5",
+            "when": 1751419356544,
+            "tag": "0000_lonely_gabe_jones",
+            "breakpoints": true
+        }
+    ]
+}
