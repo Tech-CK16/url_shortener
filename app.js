@@ -3,6 +3,7 @@ dotenv.config();
 import express from 'express';
 import { shortenerRoutes } from './routes/shortener.routes.js';
 import { authRoutes } from './routes/auth.routes.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -10,6 +11,7 @@ const PORT = 3000;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.set('view engine', 'ejs');
 

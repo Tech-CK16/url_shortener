@@ -1,13 +1,20 @@
 {
-    "version": "7",
-    "dialect": "mysql",
-    "entries": [
-        {
-            "idx": 0,
-            "version": "5",
-            "when": 1751419356544,
-            "tag": "0000_lonely_gabe_jones",
-            "breakpoints": true
-        }
-    ]
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1751419356544,
+      "tag": "0000_lonely_gabe_jones",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1753435455929,
+      "tag": "0001_same_union_jack",
+      "breakpoints": true
+    }
+  ]
 }

@@ -7,9 +7,10 @@ export const getLoginPage = (req, res) => {
 };
 
 export const postLogin = (req, res) => {
-    res.setHeader('Set-Cookie', [
-        'isLoggedIn=true; path=/;',
-        'abc=true; path=/;',
-    ]);
+    // res.setHeader('Set-Cookie', [
+    //     'isLoggedIn=true; path=/;',
+    //     'abc=true; path=/;',
+    // ]);
+    res.cookie('isLoggedIn', 'true', { path: '/' });
     res.redirect('/');
 };
