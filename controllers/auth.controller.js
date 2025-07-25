@@ -1,19 +1,27 @@
 import {
     comparePassword,
     createUser,
+    generateToken,
     getUserByEmail,
     hashPassword,
 } from '../services/auth.services.js';
 
 export const getRegisterPage = (req, res) => {
+    if (req.user)
+        return res.redirect('/');
     return res.render('auth/register');
 };
 
 export const getLoginPage = (req, res) => {
+    if (req.user)
+        return res.redirect('/');
     return res.render('auth/login');
 };
 
 export const postLogin = async (req, res) => {
+    if (req.user)
+        return res.redirect('/');
+
     const { email, password } = req.body;
     const user = await getUserByEmail(email);
 
@@ -35,15 +43,23 @@ export const postLogin = async (req, res) => {
         });
     }
 
-    res.cookie('isLoggedIn', 'true', { path: '/' });
+    // res.cookie('isLoggedIn', 'true', { path: '/' });
+    const token = generateToken({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+    });
+    res.cookie('access_token', token);
+
     res.redirect('/');
 };
 
 export const postRegister = async (req, res) => {
-    console.log(req.body);
+    if (req.user)
+        return res.redirect('/');
+
     const { name, email, password } = req.body;
     const userExists = await getUserByEmail(email);
-    console.log(userExists);
 
     if (userExists) {
         return res.status(400).render('error', {
@@ -58,5 +74,16 @@ export const postRegister = async (req, res) => {
     const [user] = await createUser({ name, email, password: hashedPassword });
     console.log(user);
 
+    res.redirect('/login');
+};
+
+export const getMe = async (req, res) => {
+    if (!req.user)
+        return res.status(401).send('Unauthorized.. you are not logged in');
+    return res.send(`<h1>Hey ${req.user.name} - ${req.user.email}</h1>`);
+};
+
+export const logoutUser = async (req, res) => {
+    res.clearCookie('access_token');
     res.redirect('/login');
 };

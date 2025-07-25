@@ -7,13 +7,9 @@ import {
 
 export const getShortenerPage = async (req, res) => {
     try {
+        if (!req.user) return res.redirect('/login');
         const links = await getAllShortLinks();
-        let isLoggedIn = req.cookies.isLoggedIn;
-        if (isLoggedIn) {
-            return res.render('index', { links, host: req.host });
-        }
-        return res.redirect('/login');
-        // return res.render('index', {links, host: req.host})
+        return res.render('index', {links, host: req.host})
     } catch (error) {
         console.error(error);
         return res.status(500).send('Internal Server Error');
