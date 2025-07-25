@@ -1,4 +1,9 @@
-import { createUser, getUserByEmail } from "../services/auth.services.js";
+import {
+    comparePassword,
+    createUser,
+    getUserByEmail,
+    hashPassword,
+} from '../services/auth.services.js';
 
 export const getRegisterPage = (req, res) => {
     return res.render('auth/register');
@@ -9,7 +14,6 @@ export const getLoginPage = (req, res) => {
 };
 
 export const postLogin = async (req, res) => {
-
     const { email, password } = req.body;
     const user = await getUserByEmail(email);
 
@@ -21,7 +25,9 @@ export const postLogin = async (req, res) => {
         });
     }
 
-    if (user.password !== password) {
+    const isPasswordValid = await comparePassword(password, user.password);
+
+    if (!isPasswordValid) {
         return res.status(400).render('error', {
             title: 'Invalid Credentials',
             message:
@@ -47,7 +53,9 @@ export const postRegister = async (req, res) => {
         });
     }
 
-    const [user] = await createUser({ name, email, password });
+    const hashedPassword = await hashPassword(password);
+
+    const [user] = await createUser({ name, email, password: hashedPassword });
     console.log(user);
 
     res.redirect('/login');
