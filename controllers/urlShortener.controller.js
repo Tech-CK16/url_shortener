@@ -8,14 +8,6 @@ import {
 export const getShortenerPage = async (req, res) => {
     try {
         const links = await getAllShortLinks();
-        // let isLoggedIn = req.headers.cookie;
-        // isLoggedIn = Boolean(
-        //     isLoggedIn
-        //         ?.split(';')
-        //         ?.find((cookie) => cookie.startsWith('isLoggedIn='))
-        //         ?.split('=')[1]
-        // );
-
         let isLoggedIn = req.cookies.isLoggedIn;
         if (isLoggedIn) {
             return res.render('index', { links, host: req.host });
