@@ -15,6 +15,13 @@
       "when": 1753435455929,
       "tag": "0001_same_union_jack",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1756817491380,
+      "tag": "0002_funny_kronos",
+      "breakpoints": true
     }
   ]
 }

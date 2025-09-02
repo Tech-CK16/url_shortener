@@ -8,8 +8,8 @@ import {
 export const getShortenerPage = async (req, res) => {
     try {
         if (!req.user) return res.redirect('/login');
-        const links = await getAllShortLinks();
-        return res.render('index', {links, host: req.host})
+        const links = await getAllShortLinks(req.user.id);
+        return res.render('index', { links, host: req.host });
     } catch (error) {
         console.error(error);
         return res.status(500).send('Internal Server Error');
@@ -18,6 +18,7 @@ export const getShortenerPage = async (req, res) => {
 
 export const postUrlShortener = async (req, res) => {
     try {
+        if (!req.user) return res.redirect('/login');
         const { url, shortCode } = req.body;
         const finalShortCode =
             shortCode || crypto.randomBytes(4).toString('hex');
@@ -35,7 +36,11 @@ export const postUrlShortener = async (req, res) => {
             });
         }
 
-        await insertShortLinks({ url, shortCode: finalShortCode });
+        await insertShortLinks({
+            url,
+            shortCode: finalShortCode,
+            userId: req.user.id,
+        });
 
         return res.redirect('/');
     } catch (error) {
