@@ -5,24 +5,29 @@ import {
     getUserByEmail,
     hashPassword,
 } from '../services/auth.services.js';
+import { loginSchema, registerSchema } from '../validators/auth-validator.js';
 
 export const getRegisterPage = (req, res) => {
-    if (req.user)
-        return res.redirect('/');
+    if (req.user) return res.redirect('/');
     return res.render('auth/register', { errors: req.flash('error') });
 };
 
 export const getLoginPage = (req, res) => {
-    if (req.user)
-        return res.redirect('/');
+    if (req.user) return res.redirect('/');
     return res.render('auth/login', { errors: req.flash('error') });
 };
 
 export const postLogin = async (req, res) => {
-    if (req.user)
-        return res.redirect('/');
+    if (req.user) return res.redirect('/');
 
     const { email, password } = req.body;
+    const result = loginSchema.safeParse(req.body);
+    if (!result.success) {
+        const firstError = result.error.issues[0].message;
+        req.flash('error', firstError);
+        return res.redirect('/login');
+    }
+
     const user = await getUserByEmail(email);
 
     if (!user) {
@@ -59,10 +64,16 @@ export const postLogin = async (req, res) => {
 };
 
 export const postRegister = async (req, res) => {
-    if (req.user)
-        return res.redirect('/');
+    if (req.user) return res.redirect('/');
 
     const { name, email, password } = req.body;
+    const result = registerSchema.safeParse(req.body);
+    if (!result.success) {
+        const firstError = result.error.issues[0].message;
+        req.flash('error', firstError);
+        return res.redirect('/register');
+    }
+
     const userExists = await getUserByEmail(email);
 
     if (userExists) {
