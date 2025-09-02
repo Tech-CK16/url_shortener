@@ -9,13 +9,13 @@ import {
 export const getRegisterPage = (req, res) => {
     if (req.user)
         return res.redirect('/');
-    return res.render('auth/register');
+    return res.render('auth/register', { errors: req.flash('error') });
 };
 
 export const getLoginPage = (req, res) => {
     if (req.user)
         return res.redirect('/');
-    return res.render('auth/login');
+    return res.render('auth/login', { errors: req.flash('error') });
 };
 
 export const postLogin = async (req, res) => {
@@ -26,21 +26,25 @@ export const postLogin = async (req, res) => {
     const user = await getUserByEmail(email);
 
     if (!user) {
-        return res.status(400).render('error', {
-            title: 'Invalid Credentials',
-            message:
-                'The email and password combination you entered is incorrect. Please try again.',
-        });
+        req.flash('error', 'Invalid Credentials');
+        // return res.status(400).render('error', {
+        //     title: 'Invalid Credentials',
+        //     message:
+        //         'The email and password combination you entered is incorrect. Please try again.',
+        // });
+        return res.redirect('/login');
     }
 
     const isPasswordValid = await comparePassword(password, user.password);
 
     if (!isPasswordValid) {
-        return res.status(400).render('error', {
-            title: 'Invalid Credentials',
-            message:
-                'The email and password combination you entered is incorrect. Please try again.',
-        });
+        req.flash('error', 'Invalid Credentials');
+        // return res.status(400).render('error', {
+        //     title: 'Invalid Credentials',
+        //     message:
+        //         'The email and password combination you entered is incorrect. Please try again.',
+        // });
+        return res.redirect('/login');
     }
 
     // res.cookie('isLoggedIn', 'true', { path: '/' });
@@ -62,11 +66,13 @@ export const postRegister = async (req, res) => {
     const userExists = await getUserByEmail(email);
 
     if (userExists) {
-        return res.status(400).render('error', {
-            title: 'User Already Exists!!',
-            message:
-                'The user you entered already exists. Please register with a different email.',
-        });
+        req.flash('error', 'User Already Exists!!');
+        // return res.status(400).render('error', {
+        //     title: 'User Already Exists!!',
+        //     message:
+        //         'The user you entered already exists. Please register with a different email.',
+        // });
+        return res.redirect('/register');
     }
 
     const hashedPassword = await hashPassword(password);

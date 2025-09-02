@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register — URL Shortener</title>
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/latest.css" />
   </head>
   <body>
     <%- include('../partials/header') %>
@@ -46,6 +46,14 @@
               required
             />
           </div>
+          
+          <% if (errors && errors.length > 0) { %>
+            <div class="error">
+              <% errors.forEach(error => { %>
+                <p><%= error %></p>
+              <% }) %>
+            </div>
+          <% } %>
 
           <button type="submit">Register</button>
         </form>
