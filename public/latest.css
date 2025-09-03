@@ -232,6 +232,10 @@ button[type="submit"]:hover {
 .url-actions .delete { background: #ef4444; color: #fff; }
 .url-actions .delete:hover { background: #dc2626; }
 
+.url-actions form {
+  margin: unset;
+}
+
 /* =========================
    FOOTER
    ========================= */

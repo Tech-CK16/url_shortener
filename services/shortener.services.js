@@ -24,3 +24,22 @@ export const insertShortLinks = async ({ url, shortCode, userId }) => {
         .values({ url, shortCode, userId });
     return result;
 };
+
+export const findShortLinkById = async (id) => {
+    const [result] = await db
+        .select()
+        .from(shortLink)
+        .where(eq(shortLink.id, id));
+    return result;
+};
+
+export const updateShortCode = async ({ id, url, shortCode }) => {
+    return await db
+        .update(shortLink)
+        .set({ url, shortCode })
+        .where(eq(shortLink.id, id));
+};
+
+export const deleteShortCodeById = async (id) => {
+    return await db.delete(shortLink).where(eq(shortLink.id, id));
+};

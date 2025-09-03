@@ -16,35 +16,45 @@
 
             <!-- Shorten Form -->
             <form id="shorten-form" action="/" method="post" class="shorten-form">
-            <div class="form-group">
-                <label for="url">Enter URL:</label>
-                <input type="url" id="url" name="url" placeholder="https://example.com" required>
-            </div>
+                <div class="form-group">
+                    <label for="url">Enter URL:</label>
+                    <input type="url" id="url" name="url" placeholder="https://example.com" required>
+                </div>
 
-            <div class="form-group">
-                <label for="shortCode">Custom Short Code (optional):</label>
-                <input type="text" id="shortCode" name="shortCode" placeholder="e.g. mylink123">
-            </div>
+                <div class="form-group">
+                    <label for="shortCode">Custom Short Code (optional):</label>
+                    <input type="text" id="shortCode" name="shortCode" placeholder="e.g. mylink123">
+                </div>
 
-            <button type="submit" class="btn-primary">Shorten</button>
+                <% if (errors && errors.length > 0) { %>
+                    <div class="error">
+                    <% errors.forEach(error => { %>
+                        <p><%= error %></p>
+                    <% }) %>
+                    </div>
+                <% } %>
+
+                <button type="submit" class="btn-primary">Shorten</button>
             </form>
 
             <!-- Shortened URLs -->
             <h2 class="section-title">Your Shortened Links</h2>
             <ul id="shortened-urls" class="minimal-scroll">
-            <% links.map(({ shortCode, url }) => { %>
-                <li class="url-card">
-                <a href="/<%= shortCode %>" target="_blank" class="short-link">
-                    <%= host %>/<%= shortCode %>
-                </a>
-                <p class="original-url"><%= url %></p>
-                <div class="url-actions">
-                    <button class="copy-btn">Copy</button>
-                    <button class="edit-btn">Edit</button>
-                    <button class="delete-btn">Delete</button>
-                </div>
-                </li>
-            <% }) %>
+                <% links.map(({ shortCode, url, id }) => { %>
+                    <li class="url-card">
+                        <a href="/<%= shortCode %>" target="_blank" class="short-link">
+                            <%= host %>/<%= shortCode %>
+                        </a>
+                        <p class="original-url"><%= url %></p>
+                        <div class="url-actions">
+                            <button class="copy-btn">Copy</button>
+                            <button class="edit-btn"><a href="/edit/<%= id %>">Edit</a></button>
+                            <form action="/delete/<%= id %>" method="post">
+                                <button class="delete-btn">Delete</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
             </ul>
         </div>
     </main>
